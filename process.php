@@ -2,7 +2,7 @@
 	include_once("functions.php");
 	
 	if(isset($_POST['action']) && $_POST['action'] == "login")
-	{
+    {
 		validate_login();
 	}
 	

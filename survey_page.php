@@ -1,20 +1,14 @@
 <?php
-	session_start();
-	
-	if(empty($_SESSION))
+	include_once('functions.php');
+
+    if(empty($_SESSION))
 	{
 		header("Location: index.php");
 		exit();
 	}
 ?>
-
-<!DOCTYPE HTML>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<title>Welcome | Survey Page</title>
-</head>
-<body>
+<?=html5() ?>
+<?=head('Welcome | Survey Page') ?>
 	<h1>Hi <?php echo $_SESSION['user_email']; ?>!</h1>
 	<p>Your password is <?php echo $_SESSION['user_pw']; ?></p>
 	<p>Click here to <a href="change_pw.php">change your password</a></p>
@@ -31,13 +25,13 @@
 		unset($_SESSION["error_messages"]);
 	}
 ?>
-	<form action="process.php" method="post" >
-		<h3>Enter your personal information:</h3>
-		
-		<label for="birthdate">Birth Date:</label>
-		<input type="date" name="birthdate" id="birthdate" />
-		<br />
-		<label>Gender:</label>
+    <h3>Enter your personal information:</h3>
+    <?php
+        echo form_open("process.php");
+        echo form_input(array('type' => 'date', 'name' => 'birth_date', 'id' => 'birth_date'));
+        echo '<br>';
+        echo form_label('Gender');
+    ?>
 		<label><input type="radio" name="gender" value="Male" />Male </label>
 		<label><input type="radio" name="gender" value="Female" />Female </label>
 		
@@ -51,9 +45,10 @@
 		</select>
 
 		<br />
-		<input type="hidden" name="action" value="process_survey" />
-		<input type="submit" value="Submit Survey" />
-	</form>
+    <?php
+        echo form_input(array("type" => "hidden", "name" => "action", "value" => "process_survey"));
+        echo form_close("Submit Survey");
+    ?>
 	
 	<hr />
 	<div id="survey_result">
@@ -69,5 +64,4 @@
 		}
 ?>
 	</div>
-</body>
-</html>
+<?=close_doc() ?>

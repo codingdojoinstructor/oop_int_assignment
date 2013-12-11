@@ -1,5 +1,5 @@
 <?php
-	session_start();
+    include_once('functions.php');	
 	
 	if(empty($_SESSION))
 	{
@@ -7,20 +7,14 @@
 		exit();
 	}
 ?>
+<?=html5(); ?>
+<?=head('Change PW'); ?>
+<?php
+    echo form_open("process.php");
+    echo form_label("password", "New Password");
+    echo form_input(false, "password");
+    echo form_input(array('type' => 'hidden', 'name' => 'action', 'value' => 'change_pw'));
+    echo form_close("Submit");
 
-<!DOCTYPE HTML>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<title>Change PW</title>
-</head>
-<body>
-	<form action="process.php" method="post">
-		<label for="password">New Password:</label>
-		<input type="password" name="password" id="password" />
-		<br />
-		<input type="hidden" name="action" value="change_pw" />
-		<input type="submit" value="Submit" />
-	</form>
-</body>
-</html>
+    echo close_doc();
+?>

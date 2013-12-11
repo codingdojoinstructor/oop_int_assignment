@@ -1,13 +1,8 @@
 <?php
-	session_start();
+    include_once('functions.php');
 ?>
-<!DOCTYPE HTML>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<title>OOP Intermediate Assignment</title>
-</head>
-<body>
+<?=html5() ?>
+<?=head('OOP Intermediate Assignment') ?>
 	<h1>Welcome!</h1>
 	<h3>Please enter your email address and password (minimum of 6 characters):</h3>
 	
@@ -20,16 +15,10 @@
 		}
 		unset($_SESSION["error_messages"]);
 	}
+    
+    echo form_open("process.php", array('email', 'password'));
+    echo form_input(array('type' => 'hidden', 'name' => 'action', 'value' => 'login'));
+    echo form_close("Submit");
+    
+    echo close_doc();
 ?>
-	<form action="process.php" method="post">
-		<label for="email">Email: </label>
-		<input type="text" name="email" id="email" />
-		<br />
-		<label for="password">Password:</label>
-		<input type="password" name="password" id="password" />
-		<br />
-		<input type="hidden" name="action" value="login" />
-		<input type="submit" value="Submit" />	
-	</form>
-</body>
-</html>

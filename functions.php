@@ -14,7 +14,7 @@
 	
 	function calculate_age()
 	{
-		$age_in_days = round(abs(strtotime($_POST['birthdate'])-strtotime(date("Y-m-d")))/86400);
+		$age_in_days = round(abs(strtotime($_POST['birth_date'])-strtotime(date("Y-m-d")))/86400);
 		return $age_in_days;
 	}
 
@@ -30,7 +30,7 @@
 			$error[] = "Wrong password format! <br />";
 		}
 		
-		if($error == NULL)
+		if(!isset($error))
 		{
 			set_user_info();
 			header("Location: survey_page.php");
@@ -39,7 +39,7 @@
 		else
 		{
 			$_SESSION['error_messages'] = $error;
-			var_dump($_SESSION);
+			//var_dump($_SESSION);
 			header("Location: index.php");
 			exit();
 		}
@@ -78,7 +78,7 @@
 	
 	function validate_survey_answer()
 	{
-		if($_POST['birthdate'] == NULL)
+		if($_POST['birth_date'] == NULL)
 		{
 			$error[] = "Please enter correct date<br/>";
 		}
@@ -93,7 +93,7 @@
 			$error[] = "Choose a color, please. <br/>";
 		}
 	
-		if($error == NULL)
+		if(!isset($error))
 		{
 			display_result();		
 		}
@@ -110,5 +110,105 @@
 	{
 		$_SESSION['user_email'] = $_POST['email'];
 		$_SESSION['user_pw'] = $_POST['password'];
-	}
+    }
+
+    function html5()
+    {
+        return '<!DOCTYPE HTML><html lang="en-US">';    
+    }
+
+    function head($title = '', $javascripts = array(), $stylesheets = array())
+    {
+        $head = '<head>';
+        $head .= '<meta charset="UTF-8">';
+        $head .= '<title>'.$title.'</title>';
+        if(!empty($javascripts)) 
+        {
+            foreach($javascripts as $script) 
+            {
+                $head .= '<script type="text/javascript" src="js/'.$script.'.js"></script>';
+            }
+        }
+        if(!empty($stylesheets)) 
+        {
+            foreach($stylesheets as $css) 
+            {
+                $head .= '<link rel="stylesheet" type="text/css" src="css/'.$css.'.css"></script>';
+            }
+        }
+        $head .= '</head><body>';
+        
+        return $head;
+    }
+    
+    function form_open($action, $inputs = array())
+    {
+        $form = '<form action="'.$action.'" method="post">';
+        if(!empty($inputs))
+        {
+            foreach($inputs as $name)
+            {
+                $form .= form_label($name);              
+                $form .= '<input type="'.($name == 'password' ? 'password' : 'text').'" name="'.$name.'" id="'.$name.'">';    
+            }
+        }
+        return $form;    
+    }
+
+    function form_label($name, $value = '')
+    {
+        $label = str_replace('_', ' ', $name);
+        $label = ucwords($label);
+        
+        $form_label = '<label for="'.$name.'">'.($value ? $value : $label).': </label>';
+
+        return $form_label;
+    }
+
+    function form_input($content, $value = '')
+    {
+        if(is_array($content)) {
+            if($content['type'] != 'hidden')
+            {
+                $input = form_label($content['name']);
+                $input .= '<input ';
+            } else {
+                $input = '<input ';
+            }    
+            foreach($content as $attr => $val)
+            {
+                $input .= $attr.'="'.$val.'"'.(end($content) == $val ? '' : ' ');
+            } 
+        } else {
+            $input = ($content ? form_label($content) : '');
+            $input .= '<input type="text" name="';
+            if($content)
+            {
+                $input .= $content.'"'.($value ? ' value="'.$value.'"' : '' ); 
+            } else {
+                $input .= $value.'"';
+            }    
+        }
+
+        $input .= '>';
+
+        return $input;
+    }
+
+   function form_close($submit = false) 
+   {
+       $form = '';
+       if($submit)
+       {
+           $form .= '<input type="submit" value="'.$submit.'">';
+       }
+       $form .= '</form>';
+
+       return $form;
+   }
+
+   function close_doc()
+   {
+       return '</body></html>';
+   }
 ?>
